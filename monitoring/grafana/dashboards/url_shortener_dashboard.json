@@ -1,0 +1,115 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "title": "Total URLs Shortened",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 4, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "datasource": "Prometheus",
+          "expr": "url_shortener_urls_created_total",
+          "legendFormat": "URLs Created"
+        }
+      ]
+    },
+    {
+      "title": "Cache Hits (Redis)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 4, "x": 4, "y": 0 },
+      "targets": [
+        {
+          "datasource": "Prometheus",
+          "expr": "url_shortener_cache_hits_total",
+          "legendFormat": "Hits"
+        }
+      ]
+    },
+    {
+      "title": "Cache Misses (DB Lookups)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 4, "x": 8, "y": 0 },
+      "targets": [
+        {
+          "datasource": "Prometheus",
+          "expr": "url_shortener_cache_misses_total",
+          "legendFormat": "Misses"
+        }
+      ]
+    },
+    {
+      "title": "Cache Hit Ratio (%)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "datasource": "Prometheus",
+          "expr": "100 * (url_shortener_cache_hits_total / (url_shortener_cache_hits_total + url_shortener_cache_misses_total > 0))",
+          "legendFormat": "Hit Ratio %"
+        }
+      ]
+    },
+    {
+      "title": "Redirects Status",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 },
+      "targets": [
+        {
+          "datasource": "Prometheus",
+          "expr": "sum(url_shortener_redirects_total) by (status)",
+          "legendFormat": "{{status}}"
+        }
+      ]
+    },
+    {
+      "title": "HTTP Request Rate (req/s)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "targets": [
+        {
+          "datasource": "Prometheus",
+          "expr": "sum(rate(http_requests_total[1m])) by (status)",
+          "legendFormat": "HTTP {{status}}"
+        }
+      ]
+    },
+    {
+  "title": "URL Lookup Latency (p50, p95, p99)",
+  "type": "timeseries",
+  "gridPos": { "h": 8, "w": 12, "x": 12, "y": 6 },
+  "targets": [
+    {
+      "datasource": "Prometheus",
+      "expr": "histogram_quantile(0.50, sum(rate(url_shortener_lookup_duration_seconds_bucket[1m])) by (le))",
+      "legendFormat": "p50 (Median)"
+    },
+    {
+      "datasource": "Prometheus",
+      "expr": "histogram_quantile(0.95, sum(rate(url_shortener_lookup_duration_seconds_bucket[1m])) by (le))",
+      "legendFormat": "p95"
+    },
+    {
+      "datasource": "Prometheus",
+      "expr": "histogram_quantile(0.99, sum(rate(url_shortener_lookup_duration_seconds_bucket[1m])) by (le))",
+      "legendFormat": "p99"
+    }
+  ]
+}
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["url-shortener", "fastapi", "redis"],
+  "time": { "from": "now-15m", "to": "now" },
+  "timepicker": {},
+  "timezone": "",
+  "title": "URL Shortener Observability Dashboard",
+  "uid": "url-shortener-obs",
+  "version": 3
+}
