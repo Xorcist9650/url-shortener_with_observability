@@ -129,7 +129,7 @@ Copy-Item .env.example .env
 
 Ensure your `.env` contains your desired credentials:
 ```env
-POSTGRES_USER=xorcist9650
+POSTGRES_USER=your_username
 POSTGRES_PASSWORD=your_secure_password
 POSTGRES_DB=url_shortener_db
 POSTGRES_HOST=db
